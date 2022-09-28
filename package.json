@@ -1,6 +1,6 @@
 {
-  "name": "format-to-json",
-  "version": "2.1.2",
+  "name": "fmt-to-json",
+  "version": "1.0.3",
   "description": "Format string to a json like template.",
   "main": "index.js",
   "bin": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/CN-Tower/format-to-json.git"
+    "url": "git+ssh://git@github.com/liujin0506/format-to-json.git"
   },
   "keywords": [
     "fmt2json",
@@ -37,16 +37,17 @@
     "json-formatter",
     "json-algorithm"
   ],
-  "author": "CN-Tower",
+  "author": "liujin0506",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CN-Tower/format-to-json/issues"
+    "url": "https://github.com/liujin0506/format-to-json/issues"
   },
-  "homepage": "https://github.com/CN-Tower/format-to-json#readme",
+  "homepage": "https://github.com/liujin0506/format-to-json#readme",
   "dependencies": {
     "commander": "^2.19.0",
     "enquirer": "^2.3.6",
-    "funclib": "^5.1.3"
+    "funclib": "^5.1.3",
+    "user": "0.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

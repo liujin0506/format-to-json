@@ -2,12 +2,12 @@
 
 <p align="center">
   <a href="https://unpkg.com/format-to-json@2.1.1/index.html">
-    <img src="https://github.com/CN-Tower/format-to-json/blob/master/images/format_html.png?raw=true">
+    <img src="https://github.com/liujin0506/format-to-json/blob/master/images/format_html.png?raw=true">
   </a>
 </p>
 
 [![npm](https://img.shields.io/npm/v/format-to-json.svg)](https://www.npmjs.com/package/format-to-json)
-[![LICENSE MIT](https://img.shields.io/npm/l/format-to-json.svg)](https://github.com/CN-Tower/format-to-json/blob/master/LICENSE)
+[![LICENSE MIT](https://img.shields.io/npm/l/format-to-json.svg)](https://github.com/liujin0506/format-to-json/blob/master/LICENSE)
 
 > Format string to a json like template 
 
@@ -119,7 +119,7 @@ interface Result {
 ## Terminal
 
 <p align="left">
-  <img width="500" src="https://github.com/CN-Tower/format-to-json/blob/master/images/format_cmd.png?raw=true">
+  <img width="500" src="https://github.com/liujin0506/format-to-json/blob/master/images/format_cmd.png?raw=true">
 </p>
 
 Run: `npm install -g format-to-json`   

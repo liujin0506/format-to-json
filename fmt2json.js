@@ -1,8 +1,8 @@
 /**
  * @license
- * format-to-json v2.1.2
- * GitHub Repository <https://github.com/CN-Tower/format-to-json>
- * Released under MIT license <https://github.com/CN-Tower/format-to-json/blob/master/LICENSE>
+ * format-to-json v1.0.1
+ * GitHub Repository <https://github.com/liujin0506/format-to-json>
+ * Released under MIT license <https://github.com/liujin0506/format-to-json/blob/master/LICENSE>
  */
 'use strict';
 
@@ -19,6 +19,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     isStrict: false,
     isEscape: false,
     isUnscape: false,
+    isUnicode: false,
+    isUnUnicode: true,
     keyQtMark: '"', // '\'' | '\"' | '';
     valQtMark: '"' // '\'' | '\"';
   };
@@ -111,6 +113,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (['\'', '"'].indexOf(options.valQtMark) > -1) {
           fmtOptions.valQtMark = options.valQtMark;
         }
+        if (typeof options.unicode === 'boolean') {
+          fmtOptions.isUnicode = options.unicode;
+        }
+        if (typeof options.unUnicode === 'boolean') {
+          fmtOptions.isUnUnicode = options.unUnicode;
+        }
       }
       baseIndent = getBaseIndent();
 
@@ -137,6 +145,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         isFmtError = true;
       } finally {
         setFmtStatus();
+        if (fmtOptions.isUnUnicode) {
+          fmtResult = unicode2Ch(fmtResult);
+        }
+        if (fmtOptions.isUnicode) {
+          fmtResult = ch2Unicode(fmtResult);
+        }
         resolve(resultOnly ? fmtResult : {
           result: fmtResult,
           status: {
@@ -144,6 +158,44 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             errFormat: errFormat, errIndex: errIndex, errExpect: errExpect, errNear: errNear
           }
         });
+      }
+
+      function isChinese(str) {
+        return (/[\u4e00-\u9fa5]/.test(str)
+        );
+      }
+
+      function ch2Unicode(str) {
+        if (!str) {
+          return;
+        }
+        var e = "";
+        for (var n = 0; n < str.length; n++) {
+          var i = str.charAt(n);
+          isChinese(i) ? e += '\\u' + i.charCodeAt(0).toString(16) : e += i;
+        }
+        return e;
+      }
+
+      function unicode2Ch(str) {
+        if (!str) {
+          return;
+        }
+        var e = 1,
+            n = "";
+        for (var i = 0; i < str.length; i += e) {
+          e = 1;
+          var o = str.charAt(i);
+          if ("\\" === o && "u" === str.charAt(i + 1)) {
+            var r = str.substring(i + 2, 4);
+            var t = parseInt(r, 16).toString(10);
+            n += String.fromCharCode(t);
+            e = 6;
+          } else {
+            n += o;
+          }
+        }
+        return n;
       }
 
       /**
@@ -528,8 +580,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           isSrcValid = false;
           errExpect = brc;
           errIndex = curIndex;
-          console.log(fmtResult);
-          console.log(fmtSource);
+          // console.log(fmtResult);
+          // console.log(fmtSource);
           var rstTrailing = fmtResult.substr(-20).replace(/^(\s|\n|\r\n)*/, '').replace(/(\n|\r\n)/mg, '\\n');
           var srcLeading = fmtSource.substr(0, 10).replace(/(\s|\n|\r\n)*$/, '').replace(/(\n|\r\n)/mg, '\\n');
           errNear = '...' + rstTrailing + '>>>>>>' + srcLeading;

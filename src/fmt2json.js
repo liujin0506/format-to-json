@@ -11,6 +11,8 @@
     isStrict: false,
     isEscape: false,
     isUnscape: false,
+    isUnicode: false,
+    isUnUnicode: true,
     keyQtMark: '"', // '\'' | '\"' | '';
     valQtMark: '"', // '\'' | '\"';
   };
@@ -98,6 +100,12 @@
         if (['\'', '"'].indexOf(options.valQtMark) > -1) {
           fmtOptions.valQtMark = options.valQtMark;
         }
+        if (typeof options.unicode === 'boolean') {
+          fmtOptions.isUnicode = options.unicode;
+        }
+        if (typeof options.unUnicode === 'boolean') {
+          fmtOptions.isUnUnicode = options.unUnicode;
+        }
       }
       baseIndent = getBaseIndent();
 
@@ -124,6 +132,12 @@
         isFmtError = true;
       } finally {
         setFmtStatus();
+        if (fmtOptions.isUnUnicode) {
+          fmtResult = unicode2Ch(fmtResult)
+        }
+        if (fmtOptions.isUnicode) {
+          fmtResult = ch2Unicode(fmtResult)
+        }
         resolve(resultOnly ? fmtResult : {
           result: fmtResult,
           status: {
@@ -131,6 +145,42 @@
             errFormat, errIndex, errExpect, errNear,
           }
         });
+      }
+
+      function isChinese(str) {
+        return /[\u4e00-\u9fa5]/.test(str)
+      }
+
+      function ch2Unicode(str) {
+        if (!str) {
+          return
+        }
+        let e = ""
+        for (let n = 0; n < str.length; n++) {
+          let i = str.charAt(n);
+          isChinese(i) ? e += "\\u" + i.charCodeAt(0).toString(16) : e += i
+        }
+        return e
+      }
+
+      function unicode2Ch(str) {
+        if (!str) {
+          return
+        }
+        let e = 1, n = ""
+        for (let i = 0; i < str.length; i += e) {
+          e = 1;
+          let o = str.charAt(i);
+          if ("\\" === o && "u" === str.charAt(i + 1)) {
+            let r = str.substring(i + 2, 4);
+            let t = parseInt(r, 16).toString(10)
+            n += String.fromCharCode(t)
+            e = 6
+          } else {
+            n += o
+          }
+        }
+        return n
       }
 
       /**
@@ -498,8 +548,8 @@
           isSrcValid = false;
           errExpect = brc;
           errIndex = curIndex;
-          console.log(fmtResult);
-          console.log(fmtSource);
+          // console.log(fmtResult);
+          // console.log(fmtSource);
           const rstTrailing = fmtResult.substr(-20).replace(/^(\s|\n|\r\n)*/, '').replace(/(\n|\r\n)/mg, '\\n');
           const srcLeading = fmtSource.substr(0, 10).replace(/(\s|\n|\r\n)*$/, '').replace(/(\n|\r\n)/mg, '\\n');
           errNear = `...${rstTrailing}>>>>>>${srcLeading}`;

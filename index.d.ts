@@ -1,13 +1,13 @@
 /**
  * @license
  * format-to-json v1.0.1
- * GitHub Repository <https://github.com/CN-Tower/format-to-json>
- * Released under MIT license <https://github.com/CN-Tower/format-to-json/blob/master/LICENSE>
+ * GitHub Repository <https://github.com/liujin0506/format-to-json>
+ * Released under MIT license <https://github.com/liujin0506/format-to-json/blob/master/LICENSE>
  */
 declare function fmt2json(
   source: string,
   options?: fmt2json.Options
-): Promise<fmt2json.Result | string>;
+): Promise<fmt2json.Result>;
 
 declare namespace fmt2json {
 
@@ -19,6 +19,8 @@ declare namespace fmt2json {
     unscape?: boolean;  // Default: false
     keyQtMark?: "'" | "\"" | ""; // Default: "\""
     valQtMark?: "'" | "\"";      // Default: "\""
+    unicode?: boolean; // 中文转换为Unicode编码
+    unUnicode?: boolean; // Unicode转中文
   }
 
   interface Result {
